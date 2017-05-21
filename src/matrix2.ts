@@ -75,7 +75,44 @@ export class Vector extends matrix.Vector {
 }
 
 export class Transformation extends matrix.Transformation {
-	constructor(v0: Vector, v1: Vector, v2: Vector) {
-		super(v0, v1, v2);
+
+	transform(
+		a: number, b: number, c: number, d: number, e: number, f: number
+	): Transformation {
+		return new Transformation(
+			new matrix.Vector(a, b, 0),
+			new matrix.Vector(c, d, 0),
+			new matrix.Vector(e, f, 1)
+		);
+	}
+
+	rotate(angle: number, center?: Vector): Transformation {
+		let t = new Transformation(
+			new matrix.Vector(Math.cos(angle), Math.sin(angle), 0),
+			new matrix.Vector(-Math.sin(angle), Math.cos(angle), 0),
+			new matrix.Vector(0, 0, 1)
+		);
+
+		return new Transformation(...t.multiply(this).vectors);
+	}
+
+	translate(v: Vector): Transformation {
+		return this;
+	}
+
+	scaleX(value: number): Transformation {
+		return this;
+	}
+
+	scaleY(value: number): Transformation {
+		return this;
+	}
+
+	skewX(angle: number): Transformation {
+		return this;
+	}
+
+	skewY(angle: number): Transformation {
+		return this;
 	}
 }
