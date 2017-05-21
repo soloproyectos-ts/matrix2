@@ -99,32 +99,56 @@ export class Transformation extends matrix.Transformation {
 	}
 
 	rotate(angle: number, center?: Vector): Transformation {
-		let t = new Transformation(
-			new matrix.Vector(Math.cos(angle), Math.sin(angle), 0),
-			new matrix.Vector(-Math.sin(angle), Math.cos(angle), 0),
-			new matrix.Vector(0, 0, 1)
-		);
+		let ret: Transformation;
+		let cos = Math.cos(angle);
+		let sin = Math.sin(angle);
 
-		return new Transformation(...t.multiply(this).vectors);
+		if (center !== undefined) {
+			ret = this.translate(center.opposite()).rotate(angle).translate(center);
+		} else {
+			ret = this.transform(new Transformation(
+				new matrix.Vector(cos, sin, 0),
+				new matrix.Vector(-sin, cos, 0),
+				new matrix.Vector(0, 0, 1)
+			));
+		}
+
+		return ret;
 	}
 
 	translate(v: Vector): Transformation {
-		return this;
+		return this.transform(new Transformation(
+			new matrix.Vector(1, 0, 0),
+			new matrix.Vector(0, 1, 0),
+			new matrix.Vector(v.x, v.y)
+		));
 	}
 
-	scaleX(value: number): Transformation {
-		return this;
-	}
+	scale(x: number, y?: number): Transformation {
+		if (y === undefined) {
+			y = x;
+		}
 
-	scaleY(value: number): Transformation {
-		return this;
+		return this.transform(new Transformation(
+			new matrix.Vector(x, 0, 0),
+			new matrix.Vector(0, y, 0),
+			new matrix.Vector(0, 0)
+		));
 	}
 
 	skewX(angle: number): Transformation {
-		return this;
+		return this.transform(new Transformation(
+			new matrix.Vector(1, 0, 0),
+			new matrix.Vector(Math.tan(angle), 1, 0),
+			new matrix.Vector(0, 0)
+		));
 	}
 
 	skewY(angle: number): Transformation {
-		return this;
+		return this.transform(new Transformation(
+			new matrix.Vector(1, Math.tan(angle), 0),
+			new matrix.Vector(0, 1, 0),
+			new matrix.Vector(0, 0)
+		));
 	}
 }
