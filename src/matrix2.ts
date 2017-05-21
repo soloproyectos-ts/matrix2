@@ -76,16 +76,26 @@ export class Vector extends matrix.Vector {
 
 export class Transformation extends matrix.Transformation {
 
-	transform(
-		a: number, b: number, c: number, d: number, e: number, f: number
-	): Transformation {
-		let t = new Transformation(
+	constructor(...vectors: matrix.Vector[]) {
+		if (vectors.length == 0) {
+			vectors.push(new matrix.Vector(1, 0, 0));
+			vectors.push(new matrix.Vector(0, 1, 0));
+			vectors.push(new matrix.Vector(0, 0, 1));
+		}
+
+		super(...vectors);
+	}
+
+	static createFromValues(a: number, b: number, c: number, d: number, e: number, f: number): Transformation {
+		return new Transformation(
 			new matrix.Vector(a, b, 0),
 			new matrix.Vector(c, d, 0),
 			new matrix.Vector(e, f, 1)
 		);
+	}
 
-		return new Transformation(...t.multiply(this).vectors);
+	transform(t: Transformation): Transformation {
+		return new Transformation(...super.transform(t).vectors);
 	}
 
 	rotate(angle: number, center?: Vector): Transformation {
