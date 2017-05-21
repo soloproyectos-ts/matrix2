@@ -79,11 +79,13 @@ export class Transformation extends matrix.Transformation {
 	transform(
 		a: number, b: number, c: number, d: number, e: number, f: number
 	): Transformation {
-		return new Transformation(
+		let t = new Transformation(
 			new matrix.Vector(a, b, 0),
 			new matrix.Vector(c, d, 0),
 			new matrix.Vector(e, f, 1)
 		);
+
+		return new Transformation(...t.multiply(this).vectors);
 	}
 
 	rotate(angle: number, center?: Vector): Transformation {
