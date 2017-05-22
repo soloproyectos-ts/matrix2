@@ -37,6 +37,12 @@ export class Vector extends matrix.Vector {
 		return this.coordinates[1];
 	}
 
+	static createFromPoints(start: Point, end?: Point): Vector {
+		let [x, y] = matrix.Vector.createFromPoints(start, end).coordinates;
+
+		return new Vector(x, y);
+	}
+
 	multiply(m: matrix.Matrix): Vector {
 		let [x, y] = super.multiply(m).coordinates;
 
@@ -98,13 +104,15 @@ export class Transformation extends matrix.Transformation {
 		return new Transformation(...super.transform(t).vectors);
 	}
 
-	rotate(angle: number, center?: Vector): Transformation {
+	rotate(angle: number, center?: Point): Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
 		let sin = Math.sin(angle);
 
 		if (center !== undefined) {
-			ret = this.translate(center.opposite()).rotate(angle).translate(center);
+			let c = Vector.createFromPoints(center);
+
+			ret = this.translate(c.opposite()).rotate(angle).translate(c);
 		} else {
 			ret = this.transform(new Transformation(
 				new matrix.Vector(cos, sin, 0),
