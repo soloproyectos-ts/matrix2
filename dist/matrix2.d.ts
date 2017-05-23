@@ -1,10 +1,11 @@
 import * as matrix from 'matrix';
-export { Matrix, SquareMatrix } from 'matrix';
-export declare class Vector extends matrix.Vector {
-    constructor(x: number, y: number);
-    readonly x: number;
-    readonly y: number;
-}
 export declare class Transformation extends matrix.Transformation {
-    constructor(v0: Vector, v1: Vector, v2: Vector);
+    constructor(...vectors: matrix.Vector[]);
+    static createFromValues(a: number, b: number, c: number, d: number, e: number, f: number): Transformation;
+    transform(t: Transformation): Transformation;
+    rotate(angle: number, center?: matrix.Point): Transformation;
+    translate(v: matrix.Vector): Transformation;
+    scale(x: number, y?: number): Transformation;
+    skewX(angle: number): Transformation;
+    skewY(angle: number): Transformation;
 }

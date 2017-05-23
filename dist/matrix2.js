@@ -8,88 +8,59 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "matrix", "matrix"], function (require, exports, matrix, matrix_1) {
+define(["require", "exports", "matrix"], function (require, exports, matrix) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Matrix = matrix_1.Matrix;
-    exports.SquareMatrix = matrix_1.SquareMatrix;
-    var Point = (function (_super) {
-        __extends(Point, _super);
-        function Point(x, y) {
-            return _super.call(this, x, y) || this;
-        }
-        Object.defineProperty(Point.prototype, "x", {
-            get: function () {
-                return this.coordinates[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Point.prototype, "y", {
-            get: function () {
-                return this.coordinates[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Point.prototype.transform = function (t) {
-            var _a = _super.prototype.transform.call(this, t).coordinates, x = _a[0], y = _a[1];
-            return new Point(x, y);
-        };
-        return Point;
-    }(matrix.Point));
-    exports.Point = Point;
-    var Vector = (function (_super) {
-        __extends(Vector, _super);
-        function Vector(x, y) {
-            return _super.call(this, x, y) || this;
-        }
-        Object.defineProperty(Vector.prototype, "x", {
-            get: function () {
-                return this.coordinates[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector.prototype, "y", {
-            get: function () {
-                return this.coordinates[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Vector.prototype.multiply = function (m) {
-            var _a = _super.prototype.multiply.call(this, m).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        Vector.prototype.transform = function (t) {
-            var _a = _super.prototype.transform.call(this, t).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        Vector.prototype.opposite = function () {
-            var _a = _super.prototype.opposite.call(this).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        Vector.prototype.scale = function (value) {
-            var _a = _super.prototype.scale.call(this, value).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        Vector.prototype.sum = function (vector) {
-            var _a = _super.prototype.sum.call(this, vector).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        Vector.prototype.subtract = function (vector) {
-            var _a = _super.prototype.subtract.call(this, vector).coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
-        return Vector;
-    }(matrix.Vector));
-    exports.Vector = Vector;
     var Transformation = (function (_super) {
         __extends(Transformation, _super);
-        function Transformation(v0, v1, v2) {
-            return _super.call(this, v0, v1, v2) || this;
+        function Transformation() {
+            var vectors = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                vectors[_i] = arguments[_i];
+            }
+            var _this = this;
+            if (vectors.length == 0) {
+                vectors.push(new matrix.Vector(1, 0, 0));
+                vectors.push(new matrix.Vector(0, 1, 0));
+                vectors.push(new matrix.Vector(0, 0, 1));
+            }
+            _this = _super.apply(this, vectors) || this;
+            return _this;
         }
+        Transformation.createFromValues = function (a, b, c, d, e, f) {
+            return new Transformation(new matrix.Vector(a, b, 0), new matrix.Vector(c, d, 0), new matrix.Vector(e, f, 1));
+        };
+        Transformation.prototype.transform = function (t) {
+            return new (Transformation.bind.apply(Transformation, [void 0].concat(_super.prototype.transform.call(this, t).vectors)))();
+        };
+        Transformation.prototype.rotate = function (angle, center) {
+            var ret;
+            var cos = Math.cos(angle);
+            var sin = Math.sin(angle);
+            if (center !== undefined) {
+                var c = matrix.Vector.createFromPoints(center);
+                ret = this.translate(c.opposite()).rotate(angle).translate(c);
+            }
+            else {
+                ret = this.transform(new Transformation(new matrix.Vector(cos, sin, 0), new matrix.Vector(-sin, cos, 0), new matrix.Vector(0, 0, 1)));
+            }
+            return ret;
+        };
+        Transformation.prototype.translate = function (v) {
+            return this.transform(new Transformation(new matrix.Vector(1, 0, 0), new matrix.Vector(0, 1, 0), new matrix.Vector(v.x, v.y)));
+        };
+        Transformation.prototype.scale = function (x, y) {
+            if (y === undefined) {
+                y = x;
+            }
+            return this.transform(new Transformation(new matrix.Vector(x, 0, 0), new matrix.Vector(0, y, 0), new matrix.Vector(0, 0)));
+        };
+        Transformation.prototype.skewX = function (angle) {
+            return this.transform(new Transformation(new matrix.Vector(1, 0, 0), new matrix.Vector(Math.tan(angle), 1, 0), new matrix.Vector(0, 0)));
+        };
+        Transformation.prototype.skewY = function (angle) {
+            return this.transform(new Transformation(new matrix.Vector(1, Math.tan(angle), 0), new matrix.Vector(0, 1, 0), new matrix.Vector(0, 0)));
+        };
         return Transformation;
     }(matrix.Transformation));
     exports.Transformation = Transformation;
