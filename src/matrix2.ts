@@ -112,6 +112,12 @@ export class Transformation extends matrix.Transformation {
 		return new Transformation(...super.transform(t).vectors);
 	}
 
+	inverse(): Transformation {
+		let t = super.inverse();
+
+		return new Transformation(...t.vectors);
+	}
+
 	rotate(angle: number, center?: Point): Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
