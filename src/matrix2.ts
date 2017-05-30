@@ -86,6 +86,46 @@ export class Vector extends matrix.Vector {
   }
 }
 
+export class Line {
+	readonly origin: Point;
+	readonly direction: Vector;
+
+	constructor (origin: Point, direction: Vector) {
+		this.origin = origin;
+		this.direction = direction;
+	}
+
+	// Gets the parallel line that contains the point [p].
+	getParallel(p: Point): Line {
+		return new Line(p, this.direction);
+	}
+
+	// Gets the perpendicular line that contains the point [p].
+	getPerpendicular(p: Point): Line {
+		return new Line(p, new Vector(-this.direction.y, this.direction.x));
+	}
+
+	// Is the line [l] parallel to [this] line?
+	isParallel(l: Line): boolean {
+		let v0 = this.direction;
+		let v1 = l.direction;
+
+		return v0.x * v1.y == v1.x * v0.y;
+	}
+
+	// Gets the intersection between [this] line and the [l] line.
+	getIntersection(l: Line): Point {
+		let [p0, p1] = [this.origin, l.origin];
+		let [v0, v1] = [this.direction, l.direction];
+		let m = new matrix.SquareMatrix(v0, v1.opposite());
+		let v = Vector.createFromPoints(p1, p0);
+		let w = v.multiply(m.inverse());
+
+		let t = new Transformation().translate(v0.scale(w.x));
+		return p0.transform(t);
+	}
+}
+
 export class Transformation extends matrix.Transformation {
 
 	constructor(...vectors: matrix.Vector[]) {
