@@ -235,3 +235,16 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 }
+
+// Gets the angle of a 'positionable' object, like a point or a vector.
+export function getAngle(p: Positionable): number {
+	let angle = Math.atan(p.y / p.x);
+
+	if (p.x < 0) {
+		angle += Math.PI;
+	} else if (p.y < 0) {
+		angle += 2 * Math.PI;
+	}
+
+	return angle;
+}
