@@ -198,7 +198,7 @@ export class Transformation extends matrix.Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(1, 0, 0),
 			new matrix.Vector(0, 1, 0),
-			new matrix.Vector(v.x, v.y)
+			new matrix.Vector(v.x, v.y, 1)
 		));
 	}
 
