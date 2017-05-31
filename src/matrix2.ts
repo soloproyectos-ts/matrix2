@@ -2,7 +2,12 @@
 
 import * as matrix from 'matrix';
 
-export class Point extends matrix.Point {
+export interface Positionable extends matrix.Positionable {
+	readonly x: number;
+	readonly y: number;
+}
+
+export class Point extends matrix.Point implements Positionable {
 	constructor (x: number, y: number) {
 		super(x, y);
 	}
@@ -23,7 +28,7 @@ export class Point extends matrix.Point {
 	}
 }
 
-export class Vector extends matrix.Vector {
+export class Vector extends matrix.Vector implements Positionable {
 	constructor (x: number, y: number) {
 		super(x, y);
 	}
