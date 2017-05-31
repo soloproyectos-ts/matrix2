@@ -124,6 +124,22 @@ export class Line {
 		let t = new Transformation().translate(v0.scale(w.x));
 		return p0.transform(t);
 	}
+
+	// Gets the tangent between [this] line and the [l] line.
+	getTangent(l: Line): number {
+		let [l0, l1] = [this, l];
+		let [p0, p1] = [l0.origin, l1.origin];
+		let l2 = l1.getPerpendicular(p0);
+		let p2 = l1.getIntersection(l2);
+		let c = l0.getIntersection(l1);
+		let u0 = Vector.createFromPoints(p2, c).unit();
+		let u1 = Vector.createFromPoints(p0, p2).unit();
+		let v = Vector.createFromPoints(p0, c);
+		let m = new matrix.SquareMatrix(u0, u1);
+		let w = v.multiply(m.inverse());
+
+		return w.y / w.x;
+	}
 }
 
 export class Transformation extends matrix.Transformation {
