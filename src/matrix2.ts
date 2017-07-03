@@ -149,6 +149,7 @@ export class Line {
 
 export class Transformation extends matrix.Transformation {
 
+	// TODO: remove vectors argument
 	constructor(...vectors: matrix.Vector[]) {
 		if (vectors.length == 0) {
 			vectors.push(new matrix.Vector(1, 0, 0));
@@ -233,6 +234,15 @@ export class Transformation extends matrix.Transformation {
 			new matrix.Vector(0, 1, 0),
 			new matrix.Vector(0, 0, 0)
 		));
+	}
+
+	toString(): string {
+		let [v0, v1, v2] = this.vectors;
+		let [a, b] = v0.coordinates;
+		let [c, d] = v1.coordinates;
+		let [e, f] = v2.coordinates;
+
+		return `matrix(${a} ${b} ${c} ${d} ${e} ${f})`;
 	}
 }
 
