@@ -130,7 +130,7 @@ export class Line {
 		return p0.transform(t);
 	}
 
-	// Gets the tangent between [this] line and the [l] line.
+	// Gets the tangent of the angle between [this] line and the [l] line.
 	getTangent(l: Line): number {
 		let [l0, l1] = [this, l];
 		let [p0, p1] = [l0.origin, l1.origin];
