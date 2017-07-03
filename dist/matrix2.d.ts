@@ -41,6 +41,7 @@ export declare class Transformation extends matrix.Transformation {
     scale(x: number, y?: number): Transformation;
     skewX(angle: number): Transformation;
     skewY(angle: number): Transformation;
+    toString(): string;
 }
 export declare function getAngle(p: Positionable): number;
 export declare function rad2deg(angle: number): number;

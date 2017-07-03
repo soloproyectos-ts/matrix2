@@ -190,6 +190,13 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
         Transformation.prototype.skewY = function (angle) {
             return this.transform(new Transformation(new matrix.Vector(1, Math.tan(angle), 0), new matrix.Vector(0, 1, 0), new matrix.Vector(0, 0, 0)));
         };
+        Transformation.prototype.toString = function () {
+            var _a = this.vectors, v0 = _a[0], v1 = _a[1], v2 = _a[2];
+            var _b = v0.coordinates, a = _b[0], b = _b[1];
+            var _c = v1.coordinates, c = _c[0], d = _c[1];
+            var _d = v2.coordinates, e = _d[0], f = _d[1];
+            return "matrix(" + a + " " + b + " " + c + " " + d + " " + e + " " + f + ")";
+        };
         return Transformation;
     }(matrix.Transformation));
     exports.Transformation = Transformation;
