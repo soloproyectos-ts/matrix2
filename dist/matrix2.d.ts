@@ -1,11 +1,15 @@
 import * as matrix from 'matrix';
-export declare class Point extends matrix.Point {
+export interface Positionable extends matrix.Positionable {
+    readonly x: number;
+    readonly y: number;
+}
+export declare class Point extends matrix.Point implements Positionable {
     constructor(x: number, y: number);
     readonly x: number;
     readonly y: number;
     transform(t: Transformation): Point;
 }
-export declare class Vector extends matrix.Vector {
+export declare class Vector extends matrix.Vector implements Positionable {
     constructor(x: number, y: number);
     static createFromPoints(end: Point, start?: Point): Vector;
     readonly x: number;
@@ -25,6 +29,7 @@ export declare class Line {
     getPerpendicular(p: Point): Line;
     isParallel(l: Line): boolean;
     getIntersection(l: Line): Point;
+    getTangent(l: Line): number;
 }
 export declare class Transformation extends matrix.Transformation {
     constructor(...vectors: matrix.Vector[]);
@@ -37,3 +42,6 @@ export declare class Transformation extends matrix.Transformation {
     skewX(angle: number): Transformation;
     skewY(angle: number): Transformation;
 }
+export declare function getAngle(p: Positionable): number;
+export declare function rad2deg(angle: number): number;
+export declare function deg2rad(angle: number): number;
