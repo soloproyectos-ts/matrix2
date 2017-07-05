@@ -201,14 +201,25 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
     }(matrix.Transformation));
     exports.Transformation = Transformation;
     function getAngle(p) {
-        var angle = Math.atan(p.y / p.x);
-        if (p.x < 0) {
-            angle += Math.PI;
+        var ret = NaN;
+        var _a = [p.x, p.y], x = _a[0], y = _a[1];
+        if (x > 0 && !(y < 0)) {
+            ret = Math.atan(y / x);
         }
-        else if (p.y < 0) {
-            angle += 2 * Math.PI;
+        else if (!(x > 0) && y > 0) {
+            ret = x < 0
+                ? Math.atan(y / x) + Math.PI
+                : Math.PI / 2;
         }
-        return angle;
+        else if (x < 0 && !(y > 0)) {
+            ret = Math.atan(y / x) + Math.PI;
+        }
+        else if (!(x < 0) && y < 0) {
+            ret = x > 0
+                ? Math.atan(y / x) + 2 * Math.PI
+                : 3 * Math.PI / 2;
+        }
+        return ret;
     }
     exports.getAngle = getAngle;
     function rad2deg(angle) {
