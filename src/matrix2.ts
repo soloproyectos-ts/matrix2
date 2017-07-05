@@ -248,15 +248,28 @@ export class Transformation extends matrix.Transformation {
 
 // Gets the angle of a 'positionable' object, like a point or a vector.
 export function getAngle(p: Positionable): number {
-	let angle = Math.atan(p.y / p.x);
+	let ret = NaN;
+	let [x, y] = [p.x, p.y];
 
-	if (p.x < 0) {
-		angle += Math.PI;
-	} else if (p.y < 0) {
-		angle += 2 * Math.PI;
+	if (x > 0 && !(y < 0)) {
+		// first quadrant
+		ret = Math.atan(y / x);
+	} else if (!(x > 0) && y > 0) {
+		// second quadrant
+		ret = x < 0
+			? Math.atan(y / x) + Math.PI
+			: Math.PI / 2;
+	} else if (x < 0 && !(y > 0)) {
+		// third quadrant
+		ret = Math.atan(y / x) + Math.PI;
+	} else if (!(x < 0) && y < 0) {
+		// fourth quadrant
+		ret = x > 0
+			? Math.atan(y / x) + 2 * Math.PI
+			: 3 * Math.PI / 2;
 	}
 
-	return angle;
+	return ret;
 }
 
 // Converts [angle] to degrees.
