@@ -92,6 +92,11 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
             var _a = v.coordinates, x = _a[0], y = _a[1];
             return new Vector(x, y);
         };
+        Vector.prototype.unit = function () {
+            var v = _super.prototype.unit.call(this);
+            var _a = v.coordinates, x = _a[0], y = _a[1];
+            return new Vector(x, y);
+        };
         return Vector;
     }(matrix.Vector));
     exports.Vector = Vector;

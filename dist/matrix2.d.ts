@@ -20,6 +20,7 @@ export declare class Vector extends matrix.Vector implements Positionable {
     scale(value: number): Vector;
     sum(vector: Vector): Vector;
     subtract(vector: Vector): Vector;
+    unit(): Vector;
 }
 export declare class Line {
     readonly origin: Point;
