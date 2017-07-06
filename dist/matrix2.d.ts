@@ -29,7 +29,6 @@ export declare class Line {
     getPerpendicular(p: Point): Line;
     isParallel(l: Line): boolean;
     getIntersection(l: Line): Point;
-    getTangent(l: Line): number;
 }
 export declare class Transformation extends matrix.Transformation {
     constructor(...vectors: matrix.Vector[]);
@@ -43,6 +42,5 @@ export declare class Transformation extends matrix.Transformation {
     skewY(angle: number): Transformation;
     toString(): string;
 }
-export declare function getAngle(p: Positionable): number;
 export declare function rad2deg(angle: number): number;
 export declare function deg2rad(angle: number): number;

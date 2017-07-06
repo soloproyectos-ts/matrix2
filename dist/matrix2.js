@@ -120,19 +120,6 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
             var t = new Transformation().translate(v0.scale(w.x));
             return p0.transform(t);
         };
-        Line.prototype.getTangent = function (l) {
-            var _a = [this, l], l0 = _a[0], l1 = _a[1];
-            var _b = [l0.origin, l1.origin], p0 = _b[0], p1 = _b[1];
-            var l2 = l1.getPerpendicular(p0);
-            var p2 = l1.getIntersection(l2);
-            var c = l0.getIntersection(l1);
-            var u0 = Vector.createFromPoints(p2, c).unit();
-            var u1 = Vector.createFromPoints(p0, p2).unit();
-            var v = Vector.createFromPoints(p0, c);
-            var m = new matrix.SquareMatrix(u0, u1);
-            var w = v.multiply(m.inverse());
-            return w.y / w.x;
-        };
         return Line;
     }());
     exports.Line = Line;
@@ -200,28 +187,6 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
         return Transformation;
     }(matrix.Transformation));
     exports.Transformation = Transformation;
-    function getAngle(p) {
-        var ret = NaN;
-        var _a = [p.x, p.y], x = _a[0], y = _a[1];
-        if (x > 0 && !(y < 0)) {
-            ret = Math.atan(y / x);
-        }
-        else if (!(x > 0) && y > 0) {
-            ret = x < 0
-                ? Math.atan(y / x) + Math.PI
-                : Math.PI / 2;
-        }
-        else if (x < 0 && !(y > 0)) {
-            ret = Math.atan(y / x) + Math.PI;
-        }
-        else if (!(x < 0) && y < 0) {
-            ret = x > 0
-                ? Math.atan(y / x) + 2 * Math.PI
-                : 3 * Math.PI / 2;
-        }
-        return ret;
-    }
-    exports.getAngle = getAngle;
     function rad2deg(angle) {
         return 180 * angle / Math.PI;
     }
