@@ -89,6 +89,13 @@ export class Vector extends matrix.Vector implements Positionable {
 
 		return new Vector(x, y);
   }
+
+	unit(): Vector {
+		let v = super.unit();
+		let [x, y] = v.coordinates;
+
+		return new Vector(x, y);
+	}
 }
 
 export class Line {
