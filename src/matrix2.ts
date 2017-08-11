@@ -138,6 +138,7 @@ export class Line {
 	}
 }
 
+// TODO: it would be interesting rotate, scale and skew relative to the center
 export class Transformation extends matrix.Transformation {
 
 	// TODO: remove vectors argument
@@ -211,6 +212,7 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
+	// TODO: replace skewX and skewY by skey(x: number, y?: number)
 	skewX(angle: number): Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(1, 0, 0),
