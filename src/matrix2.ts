@@ -172,6 +172,14 @@ export class Transformation extends matrix.Transformation {
 		return new Transformation(...t.vectors);
 	}
 
+	translate(v: Vector): Transformation {
+		return this.transform(new Transformation(
+			new matrix.Vector(1, 0, 0),
+			new matrix.Vector(0, 1, 0),
+			new matrix.Vector(v.x, v.y, 1)
+		));
+	}
+
 	rotate(angle: number, center?: Point): Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
@@ -192,15 +200,10 @@ export class Transformation extends matrix.Transformation {
 		return ret;
 	}
 
-	translate(v: Vector): Transformation {
-		return this.transform(new Transformation(
-			new matrix.Vector(1, 0, 0),
-			new matrix.Vector(0, 1, 0),
-			new matrix.Vector(v.x, v.y, 1)
-		));
-	}
+	scale(value: number|Vector): Transformation {
+		let xScale = value instanceof Vector? value.x: value;
+		let yScale = value instanceof Vector? value.y: value;
 
-	scale(xScale: number, yScale: number = xScale): Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(xScale, 0, 0),
 			new matrix.Vector(0, yScale, 0),
@@ -208,7 +211,10 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	skew(xAngle: number, yAngle: number = xAngle) {
+	skew(value: number|Vector) {
+		let xAngle = value instanceof Vector? value.x: value;
+		let yAngle = value instanceof Vector? value.y: value;
+
 		return this.transform(new Transformation(
 			new matrix.Vector(1, Math.tan(yAngle), 0),
 			new matrix.Vector(Math.tan(xAngle), 1, 0),
