@@ -207,7 +207,7 @@ export class Transformation extends matrix.Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(x, 0, 0),
 			new matrix.Vector(0, y, 0),
-			new matrix.Vector(0, 0, 0)
+			new matrix.Vector(0, 0, 1)
 		));
 	}
 
@@ -215,7 +215,7 @@ export class Transformation extends matrix.Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(1, 0, 0),
 			new matrix.Vector(Math.tan(angle), 1, 0),
-			new matrix.Vector(0, 0, 0)
+			new matrix.Vector(0, 0, 1)
 		));
 	}
 
@@ -223,7 +223,7 @@ export class Transformation extends matrix.Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(1, Math.tan(angle), 0),
 			new matrix.Vector(0, 1, 0),
-			new matrix.Vector(0, 0, 0)
+			new matrix.Vector(0, 0, 1)
 		));
 	}
 
