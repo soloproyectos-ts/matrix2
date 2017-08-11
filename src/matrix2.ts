@@ -7,37 +7,11 @@ export interface Positionable extends matrix.Positionable {
 	readonly y: number;
 }
 
-export class Point extends matrix.Point implements Positionable {
-	constructor (x: number, y: number) {
-		super(x, y);
-	}
-
-	get x() {
-		return this.coordinates[0];
-	}
-
-	get y() {
-		return this.coordinates[1];
-	}
-
-	transform(t: Transformation): Point {
-		let p = super.transform(t);
-		let [x, y] = p.coordinates;
-
-		return new Point(x, y);
-	}
-}
+export type Point = Vector;
 
 export class Vector extends matrix.Vector implements Positionable {
 	constructor (x: number, y: number) {
 		super(x, y);
-	}
-
-	static createFromPoints(end: Point, start?: Point): Vector {
-		let v = super.createFromPoints(end, start);
-		let [x, y] = v.coordinates;
-
-		return new Vector(x, y);
 	}
 
 	get x() {
@@ -130,7 +104,7 @@ export class Line {
 		let [p0, p1] = [this.origin, l.origin];
 		let [v0, v1] = [this.direction, l.direction];
 		let m = new matrix.SquareMatrix(v0, v1.opposite());
-		let v = Vector.createFromPoints(p1, p0);
+		let v = p1.subtract(p0);
 		let w = v.multiply(m.inverse());
 
 		let t = new Transformation().translate(v0.scale(w.x));
@@ -186,9 +160,7 @@ export class Transformation extends matrix.Transformation {
 		let sin = Math.sin(angle);
 
 		if (center !== undefined) {
-			let c = Vector.createFromPoints(center);
-
-			ret = this.translate(c.opposite()).rotate(angle).translate(c);
+			ret = this.translate(center.opposite()).rotate(angle).translate(center);
 		} else {
 			ret = this.transform(new Transformation(
 				new matrix.Vector(cos, sin, 0),
@@ -204,7 +176,7 @@ export class Transformation extends matrix.Transformation {
 		let xScale = value instanceof Vector? value.x: value;
 		let yScale = value instanceof Vector? value.y: value;
 		let center = params !== undefined
-			? Vector.createFromPoints(params.center)
+			? params.center
 			: new Vector(0, 0);
 
 		return this
