@@ -200,11 +200,7 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	scale(xScale: number, yScale?: number): Transformation {
-		if (yScale === undefined) {
-			yScale = xScale;
-		}
-
+	scale(xScale: number, yScale: number = xScale): Transformation {
 		return this.transform(new Transformation(
 			new matrix.Vector(xScale, 0, 0),
 			new matrix.Vector(0, yScale, 0),
