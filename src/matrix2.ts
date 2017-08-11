@@ -212,7 +212,7 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	skew(xAngle: number, yAngle: number = 0) {
+	skew(xAngle: number, yAngle: number = xAngle) {
 		return this.transform(new Transformation(
 			new matrix.Vector(1, Math.tan(yAngle), 0),
 			new matrix.Vector(Math.tan(xAngle), 1, 0),
