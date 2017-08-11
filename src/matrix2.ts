@@ -212,19 +212,10 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	// TODO: replace skewX and skewY by skey(x: number, y?: number)
-	skewX(angle: number): Transformation {
+	skew(xAngle: number, yAngle: number = 0) {
 		return this.transform(new Transformation(
-			new matrix.Vector(1, 0, 0),
-			new matrix.Vector(Math.tan(angle), 1, 0),
-			new matrix.Vector(0, 0, 1)
-		));
-	}
-
-	skewY(angle: number): Transformation {
-		return this.transform(new Transformation(
-			new matrix.Vector(1, Math.tan(angle), 0),
-			new matrix.Vector(0, 1, 0),
+			new matrix.Vector(1, Math.tan(yAngle), 0),
+			new matrix.Vector(Math.tan(xAngle), 1, 0),
 			new matrix.Vector(0, 0, 1)
 		));
 	}
