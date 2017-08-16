@@ -191,15 +191,23 @@ export class Transformation extends matrix.Transformation {
 			.translate(center);
 	}
 
-	skew(value: number|Vector) {
+	skew(value: number|Vector, params?: {center: Point}) {
 		let xAngle = value instanceof Vector? value.x: value;
 		let yAngle = value instanceof Vector? value.y: value;
+		let center = params !== undefined
+			? params.center
+			: new Vector(0, 0);
 
-		return this.transform(new Transformation(
-			new matrix.Vector(1, Math.tan(yAngle), 0),
-			new matrix.Vector(Math.tan(xAngle), 1, 0),
-			new matrix.Vector(0, 0, 1)
-		));
+		return this
+			.translate(center.opposite())
+			.transform(
+				new Transformation(
+					new matrix.Vector(1, Math.tan(yAngle), 0),
+					new matrix.Vector(Math.tan(xAngle), 1, 0),
+					new matrix.Vector(0, 0, 1)
+				)
+			)
+			.translate(center);
 	}
 
 	toString(): string {
