@@ -154,62 +154,38 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	rotate(angle: number, params?: {center: Point}): Transformation {
+	rotate(angle: number): Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
 		let sin = Math.sin(angle);
-		let center = params !== undefined
-			? params.center
-			: new Vector(0, 0);
 
-		return this
-			.translate(center.opposite())
-			.transform(
-				new Transformation(
-					new matrix.Vector(cos, sin, 0),
-					new matrix.Vector(-sin, cos, 0),
-					new matrix.Vector(0, 0, 1)
-				)
-			)
-			.translate(center);
+		return this.transform(new Transformation(
+			new matrix.Vector(cos, sin, 0),
+			new matrix.Vector(-sin, cos, 0),
+			new matrix.Vector(0, 0, 1)
+		));
 	}
 
-	scale(value: number|Vector, params?: {center: Point}): Transformation {
+	scale(value: number|Vector): Transformation {
 		let xScale = value instanceof Vector? value.x: value;
 		let yScale = value instanceof Vector? value.y: value;
-		let center = params !== undefined
-			? params.center
-			: new Vector(0, 0);
 
-		return this
-			.translate(center.opposite())
-			.transform(
-				new Transformation(
-					new matrix.Vector(xScale, 0, 0),
-					new matrix.Vector(0, yScale, 0),
-					new matrix.Vector(0, 0, 1)
-				)
-			)
-			.translate(center);
+		return this.transform(new Transformation(
+			new matrix.Vector(xScale, 0, 0),
+			new matrix.Vector(0, yScale, 0),
+			new matrix.Vector(0, 0, 1)
+		));
 	}
 
-	skew(value: number|Vector, params?: {center: Point}) {
+	skew(value: number|Vector) {
 		let xAngle = value instanceof Vector? value.x: value;
 		let yAngle = value instanceof Vector? value.y: value;
-		let center = params !== undefined
-			? params.center
-			: new Vector(0, 0);
 
-		return this
-			.translate(center.opposite())
-			.transform(
-				new Transformation(
-					new matrix.Vector(1, Math.tan(yAngle), 0),
-					new matrix.Vector(Math.tan(xAngle), 1, 0),
-					new matrix.Vector(0, 0, 1)
-				)
-			)
-			.translate(center);
+		return this.transform(new Transformation(
+			new matrix.Vector(1, Math.tan(yAngle), 0),
+			new matrix.Vector(Math.tan(xAngle), 1, 0),
+			new matrix.Vector(0, 0, 1)
+		));
 	}
 
 	toString(): string {
