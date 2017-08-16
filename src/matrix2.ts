@@ -154,22 +154,24 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	rotate(angle: number, center?: Point): Transformation {
+	rotate(angle: number, params?: {center: Point}): Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
 		let sin = Math.sin(angle);
+		let center = params !== undefined
+			? params.center
+			: new Vector(0, 0);
 
-		if (center !== undefined) {
-			ret = this.translate(center.opposite()).rotate(angle).translate(center);
-		} else {
-			ret = this.transform(new Transformation(
-				new matrix.Vector(cos, sin, 0),
-				new matrix.Vector(-sin, cos, 0),
-				new matrix.Vector(0, 0, 1)
-			));
-		}
-
-		return ret;
+		return this
+			.translate(center.opposite())
+			.transform(
+				new Transformation(
+					new matrix.Vector(cos, sin, 0),
+					new matrix.Vector(-sin, cos, 0),
+					new matrix.Vector(0, 0, 1)
+				)
+			)
+			.translate(center);
 	}
 
 	scale(value: number|Vector, params?: {center: Point}): Transformation {
