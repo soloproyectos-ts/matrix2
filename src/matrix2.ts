@@ -112,7 +112,6 @@ export class Line {
 	}
 }
 
-// TODO: it would be interesting rotate, scale and skew relative to the center
 export class Transformation extends matrix.Transformation {
 
 	// TODO: remove vectors argument
@@ -168,6 +167,7 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
+	// TODO: allow scale around a center point
 	scale(value: number|Vector): Transformation {
 		let xScale = value instanceof Vector? value.x: value;
 		let yScale = value instanceof Vector? value.y: value;
@@ -179,6 +179,7 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
+	// TODO: allow scale around a center point
 	skew(value: number|Vector) {
 		let xAngle = value instanceof Vector? value.x: value;
 		let yAngle = value instanceof Vector? value.y: value;
