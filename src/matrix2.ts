@@ -157,13 +157,13 @@ export class Transformation extends matrix.Transformation {
 		let ret: Transformation;
 		let cos = Math.cos(angle);
 		let sin = Math.sin(angle);
-		let center = params !== undefined? params.center: new Vector(0, 0);
-		let [x, y] = [center.x, center.y];
+		let c = params !== undefined? params.center: new Vector(0, 0);
 
 		return this.transform(new Transformation(
 			new matrix.Vector(cos, sin, 0),
 			new matrix.Vector(-sin, cos, 0),
-			new matrix.Vector((1 - cos) * x + sin * y, (1 - cos) * y - sin * x, 1)
+			new matrix.Vector(
+				(1 - cos) * c.x + sin * c.y, (1 - cos) * c.y - sin * c.x, 1)
 		));
 	}
 
