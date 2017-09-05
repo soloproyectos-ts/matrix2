@@ -167,15 +167,15 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	// TODO: allow scale around a center point
-	scale(value: number|Vector): Transformation {
+	scale(value: number|Vector, params?: {center: Point}): Transformation {
 		let xScale = value instanceof Vector? value.x: value;
 		let yScale = value instanceof Vector? value.y: value;
+		let c = params !== undefined? params.center: new Vector(0, 0);
 
 		return this.transform(new Transformation(
 			new matrix.Vector(xScale, 0, 0),
 			new matrix.Vector(0, yScale, 0),
-			new matrix.Vector(0, 0, 1)
+			new matrix.Vector((1 - xScale) * c.x, (1 - yScale) * c.y, 1)
 		));
 	}
 
