@@ -179,7 +179,6 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	// TODO: allow scale around a center point
 	skew(value: number|Vector) {
 		let xAngle = value instanceof Vector? value.x: value;
 		let yAngle = value instanceof Vector? value.y: value;
