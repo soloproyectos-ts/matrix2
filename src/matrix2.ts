@@ -201,6 +201,7 @@ export class Transformation extends matrix.Transformation {
 	}
 }
 
+// TODO: move these functions to 'matrix'
 // Converts [angle] to degrees.
 export function rad2deg(angle: number): number {
 	return 180 * angle / Math.PI;
