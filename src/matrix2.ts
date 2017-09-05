@@ -179,14 +179,15 @@ export class Transformation extends matrix.Transformation {
 		));
 	}
 
-	skew(value: number|Vector) {
+	skew(value: number|Vector, params?: {center: Point}) {
 		let xTan = value instanceof Vector? Math.tan(value.x): Math.tan(value);
 		let yTan = value instanceof Vector? Math.tan(value.y): Math.tan(value);
+		let c = params !== undefined? params.center: new Vector(0, 0);
 
 		return this.transform(new Transformation(
 			new matrix.Vector(1, yTan, 0),
 			new matrix.Vector(xTan, 1, 0),
-			new matrix.Vector(0, 0, 1)
+			new matrix.Vector(-xTan * c.y, -yTan * c.x, 1)
 		));
 	}
 
