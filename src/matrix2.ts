@@ -180,12 +180,12 @@ export class Transformation extends matrix.Transformation {
 	}
 
 	skew(value: number|Vector) {
-		let xAngle = value instanceof Vector? value.x: value;
-		let yAngle = value instanceof Vector? value.y: value;
+		let xTan = value instanceof Vector? Math.tan(value.x): Math.tan(value);
+		let yTan = value instanceof Vector? Math.tan(value.y): Math.tan(value);
 
 		return this.transform(new Transformation(
-			new matrix.Vector(1, Math.tan(yAngle), 0),
-			new matrix.Vector(Math.tan(xAngle), 1, 0),
+			new matrix.Vector(1, yTan, 0),
+			new matrix.Vector(xTan, 1, 0),
 			new matrix.Vector(0, 0, 1)
 		));
 	}
