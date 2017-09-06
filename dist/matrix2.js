@@ -11,43 +11,11 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "matrix"], function (require, exports, matrix) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var Point = (function (_super) {
-        __extends(Point, _super);
-        function Point(x, y) {
-            return _super.call(this, x, y) || this;
-        }
-        Object.defineProperty(Point.prototype, "x", {
-            get: function () {
-                return this.coordinates[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Point.prototype, "y", {
-            get: function () {
-                return this.coordinates[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Point.prototype.transform = function (t) {
-            var p = _super.prototype.transform.call(this, t);
-            var _a = p.coordinates, x = _a[0], y = _a[1];
-            return new Point(x, y);
-        };
-        return Point;
-    }(matrix.Point));
-    exports.Point = Point;
     var Vector = (function (_super) {
         __extends(Vector, _super);
         function Vector(x, y) {
             return _super.call(this, x, y) || this;
         }
-        Vector.createFromPoints = function (end, start) {
-            var v = _super.createFromPoints.call(this, end, start);
-            var _a = v.coordinates, x = _a[0], y = _a[1];
-            return new Vector(x, y);
-        };
         Object.defineProperty(Vector.prototype, "x", {
             get: function () {
                 return this.coordinates[0];
@@ -120,7 +88,7 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
             var _a = [this.origin, l.origin], p0 = _a[0], p1 = _a[1];
             var _b = [this.direction, l.direction], v0 = _b[0], v1 = _b[1];
             var m = new matrix.SquareMatrix(v0, v1.opposite());
-            var v = Vector.createFromPoints(p1, p0);
+            var v = p1.subtract(p0);
             var w = v.multiply(m.inverse());
             var t = new Transformation().translate(v0.scale(w.x));
             return p0.transform(t);
@@ -154,33 +122,27 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
             var t = _super.prototype.inverse.call(this);
             return new (Transformation.bind.apply(Transformation, [void 0].concat(t.vectors)))();
         };
-        Transformation.prototype.rotate = function (angle, center) {
-            var ret;
-            var cos = Math.cos(angle);
-            var sin = Math.sin(angle);
-            if (center !== undefined) {
-                var c = Vector.createFromPoints(center);
-                ret = this.translate(c.opposite()).rotate(angle).translate(c);
-            }
-            else {
-                ret = this.transform(new Transformation(new matrix.Vector(cos, sin, 0), new matrix.Vector(-sin, cos, 0), new matrix.Vector(0, 0, 1)));
-            }
-            return ret;
-        };
         Transformation.prototype.translate = function (v) {
             return this.transform(new Transformation(new matrix.Vector(1, 0, 0), new matrix.Vector(0, 1, 0), new matrix.Vector(v.x, v.y, 1)));
         };
-        Transformation.prototype.scale = function (x, y) {
-            if (y === undefined) {
-                y = x;
-            }
-            return this.transform(new Transformation(new matrix.Vector(x, 0, 0), new matrix.Vector(0, y, 0), new matrix.Vector(0, 0, 0)));
+        Transformation.prototype.rotate = function (angle, params) {
+            var ret;
+            var cos = Math.cos(angle);
+            var sin = Math.sin(angle);
+            var c = params !== undefined ? params.center : new Vector(0, 0);
+            return this.transform(new Transformation(new matrix.Vector(cos, sin, 0), new matrix.Vector(-sin, cos, 0), new matrix.Vector((1 - cos) * c.x + sin * c.y, (1 - cos) * c.y - sin * c.x, 1)));
         };
-        Transformation.prototype.skewX = function (angle) {
-            return this.transform(new Transformation(new matrix.Vector(1, 0, 0), new matrix.Vector(Math.tan(angle), 1, 0), new matrix.Vector(0, 0, 0)));
+        Transformation.prototype.scale = function (value, params) {
+            var xScale = value instanceof Vector ? value.x : value;
+            var yScale = value instanceof Vector ? value.y : value;
+            var c = params !== undefined ? params.center : new Vector(0, 0);
+            return this.transform(new Transformation(new matrix.Vector(xScale, 0, 0), new matrix.Vector(0, yScale, 0), new matrix.Vector((1 - xScale) * c.x, (1 - yScale) * c.y, 1)));
         };
-        Transformation.prototype.skewY = function (angle) {
-            return this.transform(new Transformation(new matrix.Vector(1, Math.tan(angle), 0), new matrix.Vector(0, 1, 0), new matrix.Vector(0, 0, 0)));
+        Transformation.prototype.skew = function (value, params) {
+            var xTan = value instanceof Vector ? Math.tan(value.x) : Math.tan(value);
+            var yTan = value instanceof Vector ? Math.tan(value.y) : Math.tan(value);
+            var c = params !== undefined ? params.center : new Vector(0, 0);
+            return this.transform(new Transformation(new matrix.Vector(1, yTan, 0), new matrix.Vector(xTan, 1, 0), new matrix.Vector(-xTan * c.y, -yTan * c.x, 1)));
         };
         Transformation.prototype.toString = function () {
             var _a = this.vectors, v0 = _a[0], v1 = _a[1], v2 = _a[2];

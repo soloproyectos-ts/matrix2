@@ -3,15 +3,9 @@ export interface Positionable extends matrix.Positionable {
     readonly x: number;
     readonly y: number;
 }
-export declare class Point extends matrix.Point implements Positionable {
-    constructor(x: number, y: number);
-    readonly x: number;
-    readonly y: number;
-    transform(t: Transformation): Point;
-}
+export declare type Point = Vector;
 export declare class Vector extends matrix.Vector implements Positionable {
     constructor(x: number, y: number);
-    static createFromPoints(end: Point, start?: Point): Vector;
     readonly x: number;
     readonly y: number;
     multiply(m: matrix.Matrix): Vector;
@@ -36,11 +30,16 @@ export declare class Transformation extends matrix.Transformation {
     static createFromValues(a: number, b: number, c: number, d: number, e: number, f: number): Transformation;
     transform(t: Transformation): Transformation;
     inverse(): Transformation;
-    rotate(angle: number, center?: Point): Transformation;
     translate(v: Vector): Transformation;
-    scale(x: number, y?: number): Transformation;
-    skewX(angle: number): Transformation;
-    skewY(angle: number): Transformation;
+    rotate(angle: number, params?: {
+        center: Point;
+    }): Transformation;
+    scale(value: number | Vector, params?: {
+        center: Point;
+    }): Transformation;
+    skew(value: number | Vector, params?: {
+        center: Point;
+    }): Transformation;
     toString(): string;
 }
 export declare function rad2deg(angle: number): number;

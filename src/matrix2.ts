@@ -114,7 +114,6 @@ export class Line {
 
 export class Transformation extends matrix.Transformation {
 
-	// TODO: remove vectors argument
 	constructor(...vectors: matrix.Vector[]) {
 		if (vectors.length == 0) {
 			vectors.push(new matrix.Vector(1, 0, 0));
