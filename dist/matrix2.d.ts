@@ -42,5 +42,3 @@ export declare class Transformation extends matrix.Transformation {
     }): Transformation;
     toString(): string;
 }
-export declare function rad2deg(angle: number): number;
-export declare function deg2rad(angle: number): number;

@@ -154,12 +154,4 @@ define(["require", "exports", "matrix"], function (require, exports, matrix) {
         return Transformation;
     }(matrix.Transformation));
     exports.Transformation = Transformation;
-    function rad2deg(angle) {
-        return 180 * angle / Math.PI;
-    }
-    exports.rad2deg = rad2deg;
-    function deg2rad(angle) {
-        return Math.PI * angle / 180;
-    }
-    exports.deg2rad = deg2rad;
 });
