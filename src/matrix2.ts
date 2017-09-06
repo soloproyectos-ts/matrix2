@@ -7,6 +7,7 @@ export interface Positionable extends matrix.Positionable {
 	readonly y: number;
 }
 
+// TODO: remove this artifact
 export type Point = Vector;
 
 export class Vector extends matrix.Vector implements Positionable {
@@ -198,15 +199,4 @@ export class Transformation extends matrix.Transformation {
 
 		return `matrix(${a} ${b} ${c} ${d} ${e} ${f})`;
 	}
-}
-
-// TODO: move these functions to 'matrix'
-// Converts [angle] to degrees.
-export function rad2deg(angle: number): number {
-	return 180 * angle / Math.PI;
-}
-
-// Converts [angle] to radians.
-export function deg2rad(angle: number): number {
-	return Math.PI * angle / 180;
 }
