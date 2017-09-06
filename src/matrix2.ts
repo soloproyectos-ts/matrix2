@@ -7,7 +7,6 @@ export interface Positionable extends matrix.Positionable {
 	readonly y: number;
 }
 
-// TODO: remove this artifact
 export type Point = Vector;
 
 export class Vector extends matrix.Vector implements Positionable {
